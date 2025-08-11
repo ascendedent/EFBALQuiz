@@ -14,8 +14,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            color: white;
+            background: #f5f5f5;
+            color: #333;
             overflow: hidden;
             height: 100vh;
             position: relative;
@@ -27,6 +27,10 @@
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
         .screen {
@@ -37,10 +41,10 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            padding: 20px;
             opacity: 0;
             transform: translateX(100%);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
         }
 
         .screen.active {
@@ -56,7 +60,9 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: linear-gradient(135deg, #d70000 0%, #b71c1c 100%);
+            color: white;
+            padding: 40px;
         }
 
         .logo {
@@ -95,96 +101,71 @@
             transition: opacity 0.3s;
         }
 
-        .footer-microcopy:hover {
-            opacity: 1;
+        .header-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 35px 20px 20px;
         }
 
-        .progress-bar {
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
+        .back-btn {
+            cursor: pointer;
+            stroke: #666;
+            transition: stroke 0.3s;
+        }
+
+        .back-btn:hover {
+            stroke: #d70000;
+        }
+
+        .progress-container {
+            display: flex;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
             overflow: hidden;
-            margin-bottom: 2rem;
+            gap: 5px;
         }
 
-        .progress-fill {
+        .progress-subcontainer {
+            flex: 1;
+            background-color: #ddd;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
             height: 100%;
-            background: linear-gradient(90deg, #ff6b35, #f7931e);
-            border-radius: 2px;
-            transition: width 0.6s ease;
             width: 0%;
+            background-color: #d70000;
+            transition: width 0.6s ease;
         }
 
-        .quiz-header {
-            margin-bottom: 2rem;
-        }
-
-        .progress-label {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-bottom: 0.5rem;
-        }
-
-        .question-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .answers {
+        .quiz-content {
+            padding: 0 40px 40px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 2rem;
         }
 
-        .answer-btn {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
-            color: white;
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            backdrop-filter: blur(10px);
-        }
-
-        .answer-btn:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.4);
-            transform: translateY(-2px);
-        }
-
-        .answer-btn:active {
-            transform: translateY(0);
-        }
-
-        .micro-tip {
-            font-size: 0.85rem;
-            opacity: 0.6;
+        .quiz-title {
             text-align: center;
-            margin-top: 1rem;
+            margin-bottom: 25px;
         }
 
-        .helper-text {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            background: rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 1rem;
+        .quiz-title p {
+            font-size: 42px;
+            font-weight: bold;
+            line-height: 1.4;
+            color: #d70000;
         }
 
         .start-screen {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 40px 20px;
+            background: white;
         }
 
         .start-headline {
@@ -192,57 +173,159 @@
             font-weight: 800;
             margin-bottom: 1.5rem;
             line-height: 1.1;
+            text-align: center;
+            color: #333;
         }
 
         .start-body {
             font-size: 1.1rem;
             line-height: 1.5;
             margin-bottom: 2.5rem;
-            opacity: 0.9;
+            text-align: center;
+            color: #666;
+        }
+
+        .quiz-image {
+            text-align: center;
+            margin: 35px 0;
+        }
+
+        .quiz-image img {
+            max-width: 100%;
+            width: 300px;
+            height: 300px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .question {
+            font-size: 28px;
+            font-weight: bold;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f7f7f7;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .option:hover {
+            background: #fdf2f2;
+            border-color: #d70000;
+        }
+
+        .option.selected {
+            background: #fdf2f2;
+            border-color: #d70000;
+            font-weight: bold;
+        }
+
+        .option input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: #fff;
+            border: 2px solid #d70000;
+            width: 1.25rem;
+            height: 1.25rem;
+            border-radius: 50%;
+            position: relative;
+            cursor: pointer;
+            transition: border 0.2s ease-in-out;
+            flex-shrink: 0;
+        }
+
+        .option input[type="radio"]:checked::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            background-color: #d70000;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .cta-primary {
-            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            background: #d70000;
             border: none;
             color: white;
-            padding: 18px 32px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 26px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 1rem;
-            width: 100%;
-            max-width: 300px;
+            margin: 45px auto;
+            display: block;
+            border-bottom: 4px solid #950909;
+            line-height: 1.4;
         }
 
         .cta-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 8px 25px rgba(215, 0, 0, 0.4);
+        }
+
+        .cta-primary:active {
+            transform: translateY(0);
         }
 
         .cta-secondary {
             background: none;
             border: none;
-            color: rgba(255,255,255,0.7);
+            color: #666;
             font-size: 1rem;
             cursor: pointer;
             text-decoration: underline;
             transition: color 0.3s;
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .cta-secondary:hover {
-            color: white;
+            color: #d70000;
+        }
+
+        .helper-text {
+            font-size: 0.9rem;
+            color: #666;
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
         }
 
         .end-card {
-            padding: 30px 20px;
+            background: white;
+            padding: 30px 40px;
             text-align: center;
             justify-content: space-between;
+            overflow-y: auto;
         }
 
         .badge {
-            background: rgba(255,255,255,0.2);
+            background: #d70000;
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
@@ -257,12 +340,13 @@
             font-weight: 800;
             margin-bottom: 1rem;
             line-height: 1.1;
+            color: #333;
         }
 
         .end-subhead {
             font-size: 1.1rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            color: #666;
             line-height: 1.4;
         }
 
@@ -270,19 +354,23 @@
             list-style: none;
             margin-bottom: 2rem;
             text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .benefits li {
             padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid #eee;
             font-size: 1rem;
             display: flex;
             align-items: center;
+            line-height: 1.4;
         }
 
         .benefits li:before {
             content: "✓";
-            color: #ff6b35;
+            color: #d70000;
             font-weight: bold;
             margin-right: 12px;
             font-size: 1.2rem;
@@ -290,7 +378,7 @@
 
         .urgency {
             font-size: 0.9rem;
-            color: #ff6b35;
+            color: #d70000;
             margin: 1rem 0;
             font-weight: 600;
         }
@@ -302,44 +390,69 @@
             gap: 8px;
             margin: 1rem 0;
             font-size: 0.9rem;
-            opacity: 0.8;
+            color: #666;
         }
 
         .legal-footer {
             font-size: 0.7rem;
-            opacity: 0.5;
+            color: #999;
             line-height: 1.3;
-            margin-top: auto;
+            margin-top: 2rem;
         }
 
         .image-placeholder {
-            background: rgba(255,255,255,0.1);
+            background: #f0f0f0;
             border-radius: 12px;
             padding: 20px;
             margin: 1rem 0;
             text-align: center;
             font-size: 0.8rem;
-            opacity: 0.6;
-            border: 1px dashed rgba(255,255,255,0.3);
+            color: #999;
+            border: 1px dashed #ddd;
         }
 
-        /* Prepared theme for high score */
-        .prepared-theme {
-            background: linear-gradient(135deg, #2d5a27 0%, #1e3a1e 50%, #0f2e0f 100%);
+        /* Theme variations for different risk levels */
+        .excellent-theme {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
         }
 
-        .prepared-theme .badge {
+        .excellent-theme .badge {
             background: rgba(76, 175, 80, 0.3);
             color: #a5d6a7;
         }
 
-        .prepared-theme .benefits li:before {
+        .excellent-theme .end-headline,
+        .excellent-theme .end-subhead {
+            color: white;
+        }
+
+        .excellent-theme .benefits li:before {
             color: #4caf50;
         }
 
-        /* Needs prep theme for low score */
+        .prepared-theme {
+            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 100%);
+            color: white;
+        }
+
+        .prepared-theme .badge {
+            background: rgba(33, 150, 243, 0.3);
+            color: #90caf9;
+        }
+
+        .prepared-theme .end-headline,
+        .prepared-theme .end-subhead {
+            color: white;
+        }
+
+        .prepared-theme .benefits li:before {
+            color: #2196f3;
+        }
+
         .needs-prep-theme {
-            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 50%, #8e0000 100%);
+            background: linear-gradient(135deg, #f57c00 0%, #ff9800 100%);
+            color: white;
         }
 
         .needs-prep-theme .badge {
@@ -347,19 +460,62 @@
             color: #fff176;
         }
 
+        .needs-prep-theme .end-headline,
+        .needs-prep-theme .end-subhead {
+            color: white;
+        }
+
         .needs-prep-theme .urgency {
             color: #ffeb3b;
         }
 
-        @media (max-width: 375px) {
-            .question-text {
-                font-size: 1.6rem;
+        .high-risk-theme {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+            color: white;
+        }
+
+        .high-risk-theme .badge {
+            background: rgba(244, 67, 54, 0.3);
+            color: #ffcdd2;
+        }
+
+        .high-risk-theme .end-headline,
+        .high-risk-theme .end-subhead {
+            color: white;
+        }
+
+        .high-risk-theme .urgency {
+            color: #ffeb3b;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 768px) {
+            .quiz-content {
+                padding: 0 20px 40px;
+            }
+            .header-container {
+                padding: 16px 10px 20px;
+            }
+            .question {
+                font-size: 22px;
+            }
+            .quiz-title p {
+                font-size: 22px;
             }
             .start-headline {
                 font-size: 1.8rem;
             }
             .end-headline {
                 font-size: 1.7rem;
+            }
+            .cta-primary {
+                font-size: 20px;
+                padding: 10px 40px;
             }
         }
 
@@ -385,225 +541,534 @@
 
         <!-- Start Screen -->
         <div class="screen start-screen" id="screen-start">
-            <div class="start-headline">Could you stop a small fire in 3 seconds?</div>
-            <div class="start-body">Take this 7-question checkup and unlock an <strong>exclusive offer—up to 56% off</strong> the Emergency Fire Blanket. No email needed.</div>
-            <button class="cta-primary" onclick="startQuiz()">Start the 30-sec Quiz</button>
-            <button class="cta-secondary" onclick="skipToOffer()">Skip to offer</button>
-            <div class="image-placeholder">[IMG: efb_hero_kitchen_lifestyle 1080x1080]</div>
-            <div class="legal-footer">For small household fires. Always call emergency services for unsafe situations.</div>
+            <div class="quiz-content">
+                <div class="quiz-title">
+                    <p>FIRE RISK ASSESSMENT QUIZ</p>
+                </div>
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: quiz_intro_kitchen_hero_1080x1080]</div>
+                </div>
+                <div class="start-headline">Could you stop a small fire in 3 seconds?</div>
+                <div class="start-body">Take a quick quiz and you could unlock an <strong>Exclusive Offer made just for you</strong>.</div>
+                <button class="cta-primary" onclick="startQuiz()">Start the Quiz</button>
+                <button class="cta-secondary" onclick="skipToOffer()">Skip to Offer</button>
+                <div class="legal-footer">For small, manageable fires. Always call emergency services.</div>
+            </div>
         </div>
 
         <!-- Question 1 -->
         <div class="screen" id="screen-q1">
-            <div class="quiz-header">
-                <div class="progress-label">15%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 15%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-1" style="width: 10%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-2"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Do you have a fire extinguisher in your home?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q2')">A) Yes</button>
-                <button class="answer-btn" onclick="answer(0, 'q4')">B) No</button>
-                <button class="answer-btn" onclick="answer(0, 'q2')">C) Not sure</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: under_sink_extinguisher_1080x720]</div>
+                </div>
+                <div class="question">Do you have a fire extinguisher in your home?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q2')">
+                        <input type="radio" name="q1">
+                        <span>Yes</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q6')">
+                        <input type="radio" name="q1">
+                        <span>No</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q2')">
+                        <input type="radio" name="q1">
+                        <span>Not sure</span>
+                    </label>
+                </div>
+                <div class="helper-text">This checkup adapts to your answers.</div>
             </div>
-            <div class="image-placeholder">[IMG: under_sink_extinguisher_illustration 1080x720]</div>
-            <div class="micro-tip">Not required to pass—this checkup is about real-world readiness.</div>
         </div>
 
         <!-- Question 2 -->
         <div class="screen" id="screen-q2">
-            <div class="quiz-header">
-                <div class="progress-label">30%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 30%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-2" style="width: 20%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Do you know where your extinguisher is <strong>right now</strong>?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q3')">A) Yes, exactly</button>
-                <button class="answer-btn" onclick="answer(1, 'q3')">B) Sort of</button>
-                <button class="answer-btn" onclick="answer(0, 'q4')">C) No idea</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: hallway_storage_callout_1080x720]</div>
+                </div>
+                <div class="question">Do you know where your extinguisher is <strong>right now</strong>?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q3')">
+                        <input type="radio" name="q2">
+                        <span>Yes, exactly</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 1, 'q3')">
+                        <input type="radio" name="q2">
+                        <span>Sort of</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q6')">
+                        <input type="radio" name="q2">
+                        <span>No idea</span>
+                    </label>
+                </div>
             </div>
-            <div class="image-placeholder">[IMG: hallway_storage_spot_callout 1080x720]</div>
         </div>
 
         <!-- Question 3 -->
         <div class="screen" id="screen-q3">
-            <div class="quiz-header">
-                <div class="progress-label">45%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 40%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Have you ever actually used a fire extinguisher?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q5')">A) Yes</button>
-                <button class="answer-btn" onclick="answer(0, 'q4')">B) No</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: training_extinguisher_outdoors_1080x720]</div>
+                </div>
+                <div class="question">Have you ever actually used a fire extinguisher?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q5')">
+                        <input type="radio" name="q3">
+                        <span>Yes</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q4')">
+                        <input type="radio" name="q3">
+                        <span>No</span>
+                    </label>
+                </div>
             </div>
-            <div class="image-placeholder">[IMG: practice_extinguisher_outdoors 1080x720]</div>
         </div>
 
         <!-- Question 4 -->
         <div class="screen" id="screen-q4">
-            <div class="quiz-header">
-                <div class="progress-label" id="q4-progress">60%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="q4-progress-fill" style="width: 60%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 60%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Do you know the "PASS" steps?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q5')">A) Yes</button>
-                <button class="answer-btn" onclick="answer(0, 'q5')">B) No</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: PASS_infographic_1080x1080]</div>
+                </div>
+                <div class="question">Do you know the "PASS" steps?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q5')">
+                        <input type="radio" name="q4">
+                        <span>Yes</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q5')">
+                        <input type="radio" name="q4">
+                        <span>No</span>
+                    </label>
+                </div>
+                <div class="helper-text"><strong>PASS = Pull, Aim, Squeeze, Sweep.</strong></div>
             </div>
-            <div class="helper-text"><strong>PASS = Pull, Aim, Squeeze, Sweep.</strong></div>
-            <div class="image-placeholder">[IMG: PASS_steps_infographic 1080x1080]</div>
         </div>
 
-        <!-- Question 5 -->
+        <!-- Question 5 - Only for users who have extinguisher -->
         <div class="screen" id="screen-q5">
-            <div class="quiz-header">
-                <div class="progress-label" id="q5-progress">75%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="q5-progress-fill" style="width: 75%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 80%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" id="progress-3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">When did you last check if yours still works?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q6')">A) Within 6 months</button>
-                <button class="answer-btn" onclick="answer(1, 'q6')">B) Within a year</button>
-                <button class="answer-btn" onclick="answer(0, 'q6')">C) Over a year ago</button>
-                <button class="answer-btn" onclick="answer(0, 'q6')">D) Never checked</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: gauge_check_closeup_1080x720]</div>
+                </div>
+                <div class="question">When did you last check if yours still works?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q6')">
+                        <input type="radio" name="q5">
+                        <span>Within 6 months</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 1, 'q6')">
+                        <input type="radio" name="q5">
+                        <span>Within a year</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q6')">
+                        <input type="radio" name="q5">
+                        <span>Over a year ago</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q6')">
+                        <input type="radio" name="q5">
+                        <span>Never checked</span>
+                    </label>
+                </div>
             </div>
-            <div class="image-placeholder">[IMG: gauge_check_closeup 1080x720]</div>
         </div>
 
         <!-- Question 6 -->
         <div class="screen" id="screen-q6">
-            <div class="quiz-header">
-                <div class="progress-label">90%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 90%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 20%;"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Do you have <strong>any</strong> fire-suppression tool you can grab in <strong>3 seconds</strong>?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q7')">A) Yes</button>
-                <button class="answer-btn" onclick="answer(0, 'q7')">B) No</button>
-                <button class="answer-btn" onclick="answer(0, 'q7')">C) Just water</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: tool_within_reach_hook_1080x720]</div>
+                </div>
+                <div class="question">Do you have <strong>any</strong> fire-suppression tool you can grab in <strong>3 seconds</strong>?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q7')">
+                        <input type="radio" name="q6">
+                        <span>Yes</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q7')">
+                        <input type="radio" name="q6">
+                        <span>No</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q7')">
+                        <input type="radio" name="q6">
+                        <span>Just water</span>
+                    </label>
+                </div>
+                <div class="helper-text">Water can <strong>spread grease and electrical fires</strong>—not safe.</div>
             </div>
-            <div class="helper-text">Water can <strong>spread grease and electrical fires</strong>—not safe.</div>
-            <div class="image-placeholder">[IMG: efb_within_reach_drawer_or_hook 1080x720]</div>
         </div>
 
         <!-- Question 7 -->
         <div class="screen" id="screen-q7">
-            <div class="quiz-header">
-                <div class="progress-label">70%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 70%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 40%;"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Could you safely put out a <strong>grease fire</strong> right now?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'q8')">A) Yes, I know how</button>
-                <button class="answer-btn" onclick="answer(0, 'q8')">B) I'd use water</button>
-                <button class="answer-btn" onclick="answer(0, 'q8')">C) Not sure</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: pan_fire_smother_diagram_1080x720]</div>
+                </div>
+                <div class="question">Could you safely put out a <strong>grease fire</strong> right now?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q8')">
+                        <input type="radio" name="q7">
+                        <span>Yes, I know how</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q8')">
+                        <input type="radio" name="q7">
+                        <span>I'd use water</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q8')">
+                        <input type="radio" name="q7">
+                        <span>Not sure</span>
+                    </label>
+                </div>
+                <div class="helper-text">Smother the flames—<strong>don't</strong> use water.</div>
             </div>
-            <div class="helper-text">Smother the flames—<strong>don't</strong> use water.</div>
-            <div class="image-placeholder">[IMG: pan_fire_smother_diagram 1080x720]</div>
         </div>
 
         <!-- Question 8 -->
         <div class="screen" id="screen-q8">
-            <div class="quiz-header">
-                <div class="progress-label">85%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 85%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 60%;"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">Have you ever had a <strong>kitchen fire</strong>?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(1, 'q9')">A) Yes</button>
-                <button class="answer-btn" onclick="answer(2, 'results')">B) No</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: light_smoke_kitchen_1080x720]</div>
+                </div>
+                <div class="question">Have you ever had a <strong>kitchen fire</strong>?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 1, 'q9')">
+                        <input type="radio" name="q8">
+                        <span>Yes</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 2, 'q10')">
+                        <input type="radio" name="q8">
+                        <span>No</span>
+                    </label>
+                </div>
             </div>
-            <div class="image-placeholder">[IMG: kitchen_fire_smoke_illustration 1080x720]</div>
         </div>
 
         <!-- Question 9 -->
         <div class="screen" id="screen-q9">
-            <div class="quiz-header">
-                <div class="progress-label">100%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: 100%;"></div>
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 80%;"></div>
+                    </div>
                 </div>
             </div>
-            <div class="question-text">How did you deal with it?</div>
-            <div class="answers">
-                <button class="answer-btn" onclick="answer(2, 'results')">A) Used the correct method (smothered, extinguisher, turned off heat)</button>
-                <button class="answer-btn" onclick="answer(0, 'results')">B) Used water on grease fire</button>
-                <button class="answer-btn" onclick="answer(1, 'results')">C) Panicked / called for help only</button>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: lid_cover_pan_1080x720]</div>
+                </div>
+                <div class="question">How did you handle it?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'q10')">
+                        <input type="radio" name="q9">
+                        <span>Smothered/used extinguisher/turned off heat</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'q10')">
+                        <input type="radio" name="q9">
+                        <span>Used water on grease fire</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 1, 'q10')">
+                        <input type="radio" name="q9">
+                        <span>Panicked / called for help only</span>
+                    </label>
+                </div>
             </div>
-            <div class="image-placeholder">[IMG: correct_fire_suppression_methods 1080x720]</div>
         </div>
 
-        <!-- End Card A - Prepared (High Score) -->
-        <div class="screen end-card prepared-theme" id="screen-end-a">
-            <div class="badge">Nice work</div>
-            <div class="end-headline">You're already prepared—level up your safety.</div>
-            <div class="end-subhead">As a thank-you for being proactive, unlock an <strong>exclusive deal—up to 56% off</strong> the Emergency Fire Blanket.</div>
-            
-            <ul class="benefits">
-                <li><strong>Smothers flames in seconds</strong>—no mess, no re-flash</li>
-                <li><strong>Grease & electrical safe</strong>—water isn't</li>
-                <li><strong>Family-simple</strong>—no training, no pressure gauge</li>
-            </ul>
-
-            <button class="cta-primary" onclick="openStore()">Claim up to 56% off</button>
-            <button class="cta-secondary" onclick="showDemo()">See how the EFB works</button>
-            
-            <div class="urgency">Limited-time inventory pricing. While supplies last.</div>
-            <div class="trust-strip">★★★★★ <strong>10,000+</strong> households protected</div>
-            
-            <div class="image-placeholder">[IMG: efb_bundle_hero_on_kitchen_counter 1080x1080]</div>
-            <div class="image-placeholder">[IMG: trust_badges_moneyback_safe_checkout 1080x200]</div>
-            
-            <div class="legal-footer">For small household fires only. Always call emergency services for unsafe situations. Terms apply.</div>
+        <!-- Question 10 -->
+        <div class="screen" id="screen-q10">
+            <div class="header-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="back-btn" onclick="goBack()">
+                    <path d="M10 6L4 12L10 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 12H20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <div class="progress-container">
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                    <div class="progress-subcontainer">
+                        <div class="progress-bar-fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="quiz-content">
+                <div class="quiz-image">
+                    <div class="image-placeholder">[IMG: family_drill_floorplan_1080x720]</div>
+                </div>
+                <div class="question">Have you and your household practiced what to do in case of a fire?</div>
+                <div class="options">
+                    <label class="option" onclick="selectAnswer(this, 2, 'results')">
+                        <input type="radio" name="q10">
+                        <span>Yes, within the past year</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 1, 'results')">
+                        <input type="radio" name="q10">
+                        <span>Yes, but over a year ago</span>
+                    </label>
+                    <label class="option" onclick="selectAnswer(this, 0, 'results')">
+                        <input type="radio" name="q10">
+                        <span>Never practiced</span>
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <!-- End Card B - Needs Prep (Low Score) -->
-        <div class="screen end-card needs-prep-theme" id="screen-end-b">
-            <div class="badge">Exclusive offer unlocked</div>
-            <div class="end-headline">We want you to be prepared—starting today.</div>
-            <div class="end-subhead">Get the Emergency Fire Blanket for <strong>up to 56% off</strong> and be ready to smother small fires fast.</div>
-            
-            <ul class="benefits">
-                <li><strong>No training needed</strong>—just cover and cut oxygen</li>
-                <li><strong>Kitchen-safe</strong>—ideal for grease fires</li>
-                <li><strong>Fast to deploy</strong>—store within arm's reach</li>
-            </ul>
+        <!-- End Card A - Excellent (16-20) -->
+        <div class="screen end-card excellent-theme" id="screen-end-a">
+            <div class="quiz-content">
+                <div class="badge">Excellent!</div>
+                <div class="end-headline">You're a Fire Safety Expert</div>
+                <div class="end-subhead">Your preparation is outstanding. As a thank-you for your proactive approach, unlock an <strong>exclusive deal—up to 56% off</strong> the Emergency Fire Blanket to complete your setup.</div>
+                
+                <ul class="benefits">
+                    <li><strong>Smothers flames in seconds</strong>—no mess, no re-flash</li>
+                    <li><strong>Grease & electrical safe</strong>—where water fails</li>
+                    <li><strong>Expert-approved</strong>—firefighter recommended</li>
+                </ul>
 
-            <button class="cta-primary" onclick="openStore()">Get up to 56% off now</button>
-            <button class="cta-secondary" onclick="showWhy()">Why blankets beat extinguishers for grease fires</button>
-            
-            <div class="urgency">Exclusive pricing reserved for this session.</div>
-            <div class="trust-strip">Risk-free guarantee • Free returns • Secure checkout</div>
-            
-            <div class="image-placeholder">[IMG: efb_pull_pouch_closeup 1080x1080]</div>
-            <div class="image-placeholder">[IMG: kitchen_stove_contextual_mock 1080x720]</div>
-            
-            <div class="legal-footer">Use only on small, manageable fires. Always call emergency services. Terms apply.</div>
+                <button class="cta-primary" onclick="openStore()">Claim up to 56% off</button>
+                <button class="cta-secondary" onclick="showDemo()">See expert deployment tips</button>
+                
+                <div class="urgency">Limited-time inventory pricing. While supplies last.</div>
+                <div class="trust-strip">★★★★★ <strong>10,000+</strong> households protected</div>
+                
+                <div class="image-placeholder">[IMG: bundle_hero_counter_1080x1080]</div>
+                
+                <div class="legal-footer">For small household fires only. Always call emergency services for unsafe situations. Terms apply.</div>
+            </div>
+        </div>
+
+        <!-- End Card B - Prepared (12-15) -->
+        <div class="screen end-card prepared-theme" id="screen-end-b">
+            <div class="quiz-content">
+                <div class="badge">Well Prepared</div>
+                <div class="end-headline">You're Ready for the Unexpected</div>
+                <div class="end-subhead">You've built solid fire readiness—keep it sharp with pro tips and fast-access tools. <strong>Exclusive offer—up to 56% off</strong> the Emergency Fire Blanket.</div>
+                
+                <ul class="benefits">
+                    <li><strong>Smother small fires in seconds</strong>—avoid re-flash</li>
+                    <li><strong>Kitchen-safe for grease incidents</strong>—water isn't</li>
+                    <li><strong>Family-simple</strong>—no training required</li>
+                </ul>
+
+                <button class="cta-primary" onclick="openStore()">Unlock up to 56% off</button>
+                <button class="cta-secondary" onclick="showDemo()">See how the EFB works</button>
+                
+                <div class="urgency">Exclusive pricing for quiz participants.</div>
+                <div class="trust-strip">Risk-free guarantee • Fast shipping • Secure checkout</div>
+                
+                <div class="image-placeholder">[IMG: efb_bundle_hero_on_kitchen_counter 1080x1080]</div>
+                
+                <div class="legal-footer">For small household fires only. Always call emergency services for unsafe situations. Terms apply.</div>
+            </div>
+        </div>
+
+        <!-- End Card C - Not Prepared (8-11) -->
+        <div class="screen end-card needs-prep-theme" id="screen-end-c">
+            <div class="quiz-content">
+                <div class="badge">Room to Improve</div>
+                <div class="end-headline">There's Room to Improve</div>
+                <div class="end-subhead">A few quick fixes can make the difference between a scare and an emergency. Get the Emergency Fire Blanket for <strong>up to 56% off</strong> and be ready to smother small fires fast.</div>
+                
+                <ul class="benefits">
+                    <li><strong>Smother flames fast</strong>—no residue, no mess</li>
+                    <li><strong>Ideal for grease fires</strong>—where water fails</li>
+                    <li><strong>Store within arm's reach</strong>—3-second access</li>
+                </ul>
+
+                <button class="cta-primary" onclick="openStore()">Get up to 56% off now</button>
+                <button class="cta-secondary" onclick="showWhy()">Why smothering beats spraying</button>
+                
+                <div class="urgency">Exclusive pricing reserved for this session.</div>
+                <div class="trust-strip">Risk-free guarantee • Free returns • Secure checkout</div>
+                
+                <div class="image-placeholder">[IMG: pull_pouch_closeup_1080x1080]</div>
+                
+                <div class="legal-footer">Use only on small, manageable fires. Always call emergency services. Terms apply.</div>
+            </div>
+        </div>
+
+        <!-- End Card D - High Risk (0-7) -->
+        <div class="screen end-card high-risk-theme" id="screen-end-d">
+            <div class="quiz-content">
+                <div class="badge">High Risk</div>
+                <div class="end-headline">Your Home Is in Danger if a Fire Starts</div>
+                <div class="end-subhead">Right now, your readiness has critical gaps. Let's fix them in the next 60 seconds. <strong>Every day you wait increases your risk.</strong></div>
+                
+                <ul class="benefits">
+                    <li><strong>Stop small fires before they spread</strong></li>
+                    <li><strong>Safer for grease and electrical incidents</strong></li>
+                    <li><strong>Simple enough for the whole family</strong></li>
+                </ul>
+
+                <button class="cta-primary" onclick="openStore()">Secure up to 56% off—make your home safer today</button>
+                <button class="cta-secondary" onclick="showUrgent()">Learn the 3-second rule</button>
+                
+                <div class="urgency">🚨 URGENT: Exclusive pricing reserved for this session.</div>
+                <div class="trust-strip">Firefighter-backed • Thousands protected • Act now</div>
+                
+                <div class="image-placeholder">[IMG: urgent_banner_hero_1080x1080]</div>
+                
+                <div class="legal-footer">Always call emergency services for unsafe situations. Terms apply.</div>
+            </div>
         </div>
     </div>
 
     <script>
         let currentScreen = 'loading';
         let score = 0;
-        let questionCount = 0;
-
-        // Quiz state tracking
         let hasExtinguisher = null;
+        let hadKitchenFire = null;
+        let screenHistory = ['loading'];
 
         function showScreen(screenId) {
             // Hide current screen
@@ -624,6 +1089,15 @@
             }, 200);
 
             currentScreen = screenId;
+            screenHistory.push(screenId);
+        }
+
+        function goBack() {
+            if (screenHistory.length > 2) {
+                screenHistory.pop(); // Remove current
+                const previousScreen = screenHistory[screenHistory.length - 1];
+                showScreen(previousScreen.replace('screen-', ''));
+            }
         }
 
         function startQuiz() {
@@ -634,31 +1108,39 @@
             }
         }
 
-        function answer(points, nextScreen) {
+        function selectAnswer(optionElement, points, nextScreen) {
+            // Visual feedback
+            const allOptions = optionElement.parentElement.querySelectorAll('.option');
+            allOptions.forEach(opt => opt.classList.remove('selected'));
+            optionElement.classList.add('selected');
+            
+            // Check the radio
+            const radio = optionElement.querySelector('input[type="radio"]');
+            radio.checked = true;
+
             score += points;
             
-            // Track first question for branching logic
+            // Track important branching decisions
             if (currentScreen === 'q1') {
-                hasExtinguisher = points > 0; // Yes or Not sure = true, No = false
+                hasExtinguisher = optionElement.querySelector('span').textContent === 'Yes';
+            }
+            
+            if (currentScreen === 'q8') {
+                hadKitchenFire = optionElement.querySelector('span').textContent === 'Yes';
             }
 
-            // Handle compressed path progress indicators for users without extinguisher
-            if (!hasExtinguisher) {
-                if (nextScreen === 'q4') {
-                    document.getElementById('q4-progress').textContent = '45%';
-                    document.getElementById('q4-progress-fill').style.width = '45%';
-                }
-                if (nextScreen === 'q5') {
-                    document.getElementById('q5-progress').textContent = '60%';
-                    document.getElementById('q5-progress-fill').style.width = '60%';
-                }
-            }
-
+            // Handle results
             if (nextScreen === 'results') {
-                calculateResults();
-            } else {
-                setTimeout(() => showScreen(nextScreen), 300);
+                setTimeout(() => calculateResults(), 300);
+                return;
             }
+
+            // Skip Q5 (maintenance) if user doesn't have extinguisher
+            if (nextScreen === 'q6' && currentScreen === 'q4' && !hasExtinguisher) {
+                // This shouldn't happen with our logic, but safety check
+            }
+
+            setTimeout(() => showScreen(nextScreen), 300);
         }
 
         function calculateResults() {
@@ -677,44 +1159,51 @@
                 z-index: 1000;
                 font-size: 1.2rem;
                 font-weight: 600;
+                color: white;
             `;
             analyzing.textContent = 'Analyzing your results...';
             document.body.appendChild(analyzing);
 
             setTimeout(() => {
                 document.body.removeChild(analyzing);
-                if (score >= 12) {
-                    showScreen('end-a'); // Prepared
+                
+                // Updated 4-tier scoring
+                if (score >= 16) {
+                    showScreen('end-a'); // Excellent
+                } else if (score >= 12) {
+                    showScreen('end-b'); // Prepared 
+                } else if (score >= 8) {
+                    showScreen('end-c'); // Not Prepared
                 } else {
-                    showScreen('end-b'); // Needs Prep
+                    showScreen('end-d'); // High Risk
                 }
             }, 800);
         }
 
         function skipToOffer() {
-            // Send them to low-score end card since they're skipping the assessment
+            // Send them to high-risk end card since they're skipping the assessment
             score = 0;
-            showScreen('end-b');
+            showScreen('end-d');
         }
 
         function openStore() {
             // AppLovin/MRAID compliant store open
             if (typeof mraid !== 'undefined' && mraid.open) {
-                mraid.open('https://preparedhero.com/emergency-fire-blanket?utm_source=applovin&utm_campaign=efb_quiz');
+                mraid.open('https://order.preparedhero.com/quiz-efb-sp?utm_source=applovin&utm_campaign=efb_quiz');
             } else if (window.parent && window.parent !== window) {
                 // Fallback for iframe context
                 window.parent.postMessage({
                     type: 'open_store',
-                    url: 'https://preparedhero.com/emergency-fire-blanket?utm_source=applovin&utm_campaign=efb_quiz'
+                    url: 'https://order.preparedhero.com/quiz-efb-sp?utm_source=applovin&utm_campaign=efb_quiz'
                 }, '*');
             } else {
                 // Fallback for testing
-                window.open('https://preparedhero.com/emergency-fire-blanket?utm_source=applovin&utm_campaign=efb_quiz', '_blank');
+                window.open('https://order.preparedhero.com/quiz-efb-sp?utm_source=applovin&utm_campaign=efb_quiz', '_blank');
             }
         }
 
         function showDemo() {
-            // Secondary CTA for prepared users
+            // Secondary CTA 
             if (typeof mraid !== 'undefined' && mraid.open) {
                 mraid.open('https://preparedhero.com/how-efb-works?utm_source=applovin');
             } else {
@@ -723,11 +1212,20 @@
         }
 
         function showWhy() {
-            // Secondary CTA for needs-prep users
+            // Secondary CTA for not prepared users
             if (typeof mraid !== 'undefined' && mraid.open) {
                 mraid.open('https://preparedhero.com/blanket-vs-extinguisher?utm_source=applovin');
             } else {
                 window.open('https://preparedhero.com/blanket-vs-extinguisher?utm_source=applovin', '_blank');
+            }
+        }
+
+        function showUrgent() {
+            // Secondary CTA for high-risk users
+            if (typeof mraid !== 'undefined' && mraid.open) {
+                mraid.open('https://preparedhero.com/3-second-fire-rule?utm_source=applovin');
+            } else {
+                window.open('https://preparedhero.com/3-second-fire-rule?utm_source=applovin', '_blank');
             }
         }
 
@@ -749,6 +1247,10 @@
 
         // Prevent scrolling and handle touch events
         document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.screen.active .quiz-content')) {
+                // Allow scrolling within quiz content
+                return;
+            }
             e.preventDefault();
         }, { passive: false });
 
@@ -761,7 +1263,7 @@
 
         // Add haptic to all button clicks
         document.addEventListener('click', function(e) {
-            if (e.target.tagName === 'BUTTON' || e.target.classList.contains('answer-btn')) {
+            if (e.target.tagName === 'BUTTON' || e.target.classList.contains('option')) {
                 addHaptic();
             }
         });
@@ -777,26 +1279,30 @@
             }
         }
 
-        // Track quiz start
+        // Track quiz milestones
         function trackQuizStart() {
             trackEvent('quiz_started');
         }
 
-        // Track quiz completion
         function trackQuizComplete(finalScore) {
+            let category = 'high_risk';
+            if (finalScore >= 16) category = 'excellent';
+            else if (finalScore >= 12) category = 'prepared';
+            else if (finalScore >= 8) category = 'not_prepared';
+            
             trackEvent('quiz_completed', { 
                 score: finalScore,
-                category: finalScore >= 10 ? 'prepared' : 'needs_prep'
+                category: category
             });
         }
 
-        // Update answer function to include tracking
-        const originalAnswer = answer;
-        answer = function(points, nextScreen) {
+        // Update selectAnswer to include tracking
+        const originalSelectAnswer = selectAnswer;
+        selectAnswer = function(optionElement, points, nextScreen) {
             if (nextScreen === 'results') {
                 trackQuizComplete(score + points);
             }
-            return originalAnswer(points, nextScreen);
+            return originalSelectAnswer(optionElement, points, nextScreen);
         };
     </script>
 </body>
