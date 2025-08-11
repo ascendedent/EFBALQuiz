@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Fire Blanket Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .screen.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .screen.prev {
+            transform: translateX(-100%);
+        }
+
+        .loading-screen {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .loading-subhead {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer-microcopy {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .footer-microcopy:hover {
+            opacity: 1;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            border-radius: 2px;
+            transition: width 0.6s ease;
+            width: 0%;
+        }
+
+        .quiz-header {
+            margin-bottom: 2rem;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .answers {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .answer-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            backdrop-filter: blur(10px);
+        }
+
+        .answer-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .answer-btn:active {
+            transform: translateY(0);
+        }
+
+        .micro-tip {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .helper-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .start-screen {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .start-headline {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .start-body {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            border: none;
+            color: white;
+            padding: 18px 32px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+        }
+
+        .cta-secondary {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .cta-secondary:hover {
+            color: white;
+        }
+
+        .end-card {
+            padding: 30px 20px;
+            text-align: center;
+            justify-content: space-between;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .end-headline {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .end-subhead {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        .benefits {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .benefits li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .benefits li:before {
+            content: "✓";
+            color: #ff6b35;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+
+        .urgency {
+            font-size: 0.9rem;
+            color: #ff6b35;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .trust-strip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .legal-footer {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            line-height: 1.3;
+            margin-top: auto;
+        }
+
+        .image-placeholder {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 1rem 0;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.6;
+            border: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        /* Prepared theme for high score */
+        .prepared-theme {
+            background: linear-gradient(135deg, #2d5a27 0%, #1e3a1e 50%, #0f2e0f 100%);
+        }
+
+        .prepared-theme .badge {
+            background: rgba(76, 175, 80, 0.3);
+            color: #a5d6a7;
+        }
+
+        .prepared-theme .benefits li:before {
+            color: #4caf50;
+        }
+
+        /* Needs prep theme for low score */
+        .needs-prep-theme {
+            background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 50%, #8e0000 100%);
+        }
+
+        .needs-prep-theme .badge {
+            background: rgba(255, 193, 7, 0.3);
+            color: #fff176;
+        }
+
+        .needs-prep-theme .urgency {
+            color: #ffeb3b;
+        }
+
+        @media (max-width: 375px) {
+            .question-text {
+                font-size: 1.6rem;
+            }
+            .start-headline {
+                font-size: 1.8rem;
+            }
+            .end-headline {
+                font-size: 1.7rem;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loading Screen -->
+        <div class="screen loading-screen active" id="screen-loading">
+            <div class="logo">Prepared Hero</div>
+            <div class="loading-subhead">Fire starts fast. Be faster.</div>
+            <div class="spinner"></div>
+            <div class="footer-microcopy" onclick="startQuiz()">Takes ~30 seconds. Tap to begin.</div>
+        </div>
+
+        <!-- Start Screen -->
+        <div class="screen start-screen" id="screen-start">
+            <div class="start-headline">Could you stop a small fire in 3 seconds?</div>
+            <div class="start-body">Take this 7-question checkup and unlock an <strong>exclusive offer—up to 56% off</strong> the Emergency Fire Blanket. No email needed.</div>
+            <button class="cta-primary" onclick="startQuiz()">Start the 30-sec Quiz</button>
+            <button class="cta-secondary" onclick="skipToOffer()">Skip to offer</button>
+            <div class="image-placeholder">[IMG: efb_hero_kitchen_lifestyle 1080x1080]</div>
+            <div class="legal-footer">For small household fires. Always call emergency services for unsafe situations.</div>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="screen" id="screen-q1">
+            <div class="quiz-header">
+                <div class="progress-label">15%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 15%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Do you have a fire extinguisher in your home?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q2')">A) Yes</button>
+                <button class="answer-btn" onclick="answer(0, 'q4')">B) No</button>
+                <button class="answer-btn" onclick="answer(0, 'q2')">C) Not sure</button>
+            </div>
+            <div class="image-placeholder">[IMG: under_sink_extinguisher_illustration 1080x720]</div>
+            <div class="micro-tip">Not required to pass—this checkup is about real-world readiness.</div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="screen" id="screen-q2">
+            <div class="quiz-header">
+                <div class="progress-label">30%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Do you know where your extinguisher is <strong>right now</strong>?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q3')">A) Yes, exactly</button>
+                <button class="answer-btn" onclick="answer(1, 'q3')">B) Sort of</button>
+                <button class="answer-btn" onclick="answer(0, 'q4')">C) No idea</button>
+            </div>
+            <div class="image-placeholder">[IMG: hallway_storage_spot_callout 1080x720]</div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="screen" id="screen-q3">
+            <div class="quiz-header">
+                <div class="progress-label">45%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Have you ever actually used a fire extinguisher?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q5')">A) Yes</button>
+                <button class="answer-btn" onclick="answer(0, 'q4')">B) No</button>
+            </div>
+            <div class="image-placeholder">[IMG: practice_extinguisher_outdoors 1080x720]</div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="screen" id="screen-q4">
+            <div class="quiz-header">
+                <div class="progress-label" id="q4-progress">60%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="q4-progress-fill" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Do you know the "PASS" steps?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q5')">A) Yes</button>
+                <button class="answer-btn" onclick="answer(0, 'q5')">B) No</button>
+            </div>
+            <div class="helper-text"><strong>PASS = Pull, Aim, Squeeze, Sweep.</strong></div>
+            <div class="image-placeholder">[IMG: PASS_steps_infographic 1080x1080]</div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="screen" id="screen-q5">
+            <div class="quiz-header">
+                <div class="progress-label" id="q5-progress">75%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="q5-progress-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+            <div class="question-text">When did you last check if yours still works?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q6')">A) Within 6 months</button>
+                <button class="answer-btn" onclick="answer(1, 'q6')">B) Within a year</button>
+                <button class="answer-btn" onclick="answer(0, 'q6')">C) Over a year ago</button>
+                <button class="answer-btn" onclick="answer(0, 'q6')">D) Never checked</button>
+            </div>
+            <div class="image-placeholder">[IMG: gauge_check_closeup 1080x720]</div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="screen" id="screen-q6">
+            <div class="quiz-header">
+                <div class="progress-label">90%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 90%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Do you have <strong>any</strong> fire-suppression tool you can grab in <strong>3 seconds</strong>?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q7')">A) Yes</button>
+                <button class="answer-btn" onclick="answer(0, 'q7')">B) No</button>
+                <button class="answer-btn" onclick="answer(0, 'q7')">C) Just water</button>
+            </div>
+            <div class="helper-text">Water can <strong>spread grease and electrical fires</strong>—not safe.</div>
+            <div class="image-placeholder">[IMG: efb_within_reach_drawer_or_hook 1080x720]</div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="screen" id="screen-q7">
+            <div class="quiz-header">
+                <div class="progress-label">70%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Could you safely put out a <strong>grease fire</strong> right now?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'q8')">A) Yes, I know how</button>
+                <button class="answer-btn" onclick="answer(0, 'q8')">B) I'd use water</button>
+                <button class="answer-btn" onclick="answer(0, 'q8')">C) Not sure</button>
+            </div>
+            <div class="helper-text">Smother the flames—<strong>don't</strong> use water.</div>
+            <div class="image-placeholder">[IMG: pan_fire_smother_diagram 1080x720]</div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="screen" id="screen-q8">
+            <div class="quiz-header">
+                <div class="progress-label">85%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%;"></div>
+                </div>
+            </div>
+            <div class="question-text">Have you ever had a <strong>kitchen fire</strong>?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(1, 'q9')">A) Yes</button>
+                <button class="answer-btn" onclick="answer(2, 'results')">B) No</button>
+            </div>
+            <div class="image-placeholder">[IMG: kitchen_fire_smoke_illustration 1080x720]</div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="screen" id="screen-q9">
+            <div class="quiz-header">
+                <div class="progress-label">100%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="question-text">How did you deal with it?</div>
+            <div class="answers">
+                <button class="answer-btn" onclick="answer(2, 'results')">A) Used the correct method (smothered, extinguisher, turned off heat)</button>
+                <button class="answer-btn" onclick="answer(0, 'results')">B) Used water on grease fire</button>
+                <button class="answer-btn" onclick="answer(1, 'results')">C) Panicked / called for help only</button>
+            </div>
+            <div class="image-placeholder">[IMG: correct_fire_suppression_methods 1080x720]</div>
+        </div>
+
+        <!-- End Card A - Prepared (High Score) -->
+        <div class="screen end-card prepared-theme" id="screen-end-a">
+            <div class="badge">Nice work</div>
+            <div class="end-headline">You're already prepared—level up your safety.</div>
+            <div class="end-subhead">As a thank-you for being proactive, unlock an <strong>exclusive deal—up to 56% off</strong> the Emergency Fire Blanket.</div>
+            
+            <ul class="benefits">
+                <li><strong>Smothers flames in seconds</strong>—no mess, no re-flash</li>
+                <li><strong>Grease & electrical safe</strong>—water isn't</li>
+                <li><strong>Family-simple</strong>—no training, no pressure gauge</li>
+            </ul>
+
+            <button class="cta-primary" onclick="openStore()">Claim up to 56% off</button>
+            <button class="cta-secondary" onclick="showDemo()">See how the EFB works</button>
+            
+            <div class="urgency">Limited-time inventory pricing. While supplies last.</div>
+            <div class="trust-strip">★★★★★ <strong>10,000+</strong> households protected</div>
+            
+            <div class="image-placeholder">[IMG: efb_bundle_hero_on_kitchen_counter 1080x1080]</div>
+            <div class="image-placeholder">[IMG: trust_badges_moneyback_safe_checkout 1080x200]</div>
+            
+            <div class="legal-footer">For small household fires only. Always call emergency services for unsafe situations. Terms apply.</div>
+        </div>
+
+        <!-- End Card B - Needs Prep (Low Score) -->
+        <div class="screen end-card needs-prep-theme" id="screen-end-b">
+            <div class="badge">Exclusive offer unlocked</div>
+            <div class="end-headline">We want you to be prepared—starting today.</div>
+            <div class="end-subhead">Get the Emergency Fire Blanket for <strong>up to 56% off</strong> and be ready to smother small fires fast.</div>
+            
+            <ul class="benefits">
+                <li><strong>No training needed</strong>—just cover and cut oxygen</li>
+                <li><strong>Kitchen-safe</strong>—ideal for grease fires</li>
+                <li><strong>Fast to deploy</strong>—store within arm's reach</li>
+            </ul>
+
+            <button class="cta-primary" onclick="openStore()">Get up to 56% off now</button>
+            <button class="cta-secondary" onclick="showWhy()">Why blankets beat extinguishers for grease fires</button>
+            
+            <div class="urgency">Exclusive pricing reserved for this session.</div>
+            <div class="trust-strip">Risk-free guarantee • Free returns • Secure checkout</div>
+            
+            <div class="image-placeholder">[IMG: efb_pull_pouch_closeup 1080x1080]</div>
+            <div class="image-placeholder">[IMG: kitchen_stove_contextual_mock 1080x720]</div>
+            
+            <div class="legal-footer">Use only on small, manageable fires. Always call emergency services. Terms apply.</div>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 'loading';
+        let score = 0;
+        let questionCount = 0;
+
+        // Quiz state tracking
+        let hasExtinguisher = null;
+
+        function showScreen(screenId) {
+            // Hide current screen
+            const current = document.querySelector('.screen.active');
+            if (current) {
+                current.classList.remove('active');
+                current.classList.add('prev');
+            }
+
+            // Show new screen
+            setTimeout(() => {
+                if (current) current.classList.remove('prev');
+                const newScreen = document.getElementById(`screen-${screenId}`);
+                if (newScreen) {
+                    newScreen.classList.add('active', 'fade-in');
+                    setTimeout(() => newScreen.classList.remove('fade-in'), 600);
+                }
+            }, 200);
+
+            currentScreen = screenId;
+        }
+
+        function startQuiz() {
+            if (currentScreen === 'loading') {
+                showScreen('start');
+            } else {
+                showScreen('q1');
+            }
+        }
+
+        function answer(points, nextScreen) {
+            score += points;
+            
+            // Track first question for branching logic
+            if (currentScreen === 'q1') {
+                hasExtinguisher = points > 0; // Yes or Not sure = true, No = false
+            }
+
+            // Handle compressed path progress indicators for users without extinguisher
+            if (!hasExtinguisher) {
+                if (nextScreen === 'q4') {
+                    document.getElementById('q4-progress').textContent = '45%';
+                    document.getElementById('q4-progress-fill').style.width = '45%';
+                }
+                if (nextScreen === 'q5') {
+                    document.getElementById('q5-progress').textContent = '60%';
+                    document.getElementById('q5-progress-fill').style.width = '60%';
+                }
+            }
+
+            if (nextScreen === 'results') {
+                calculateResults();
+            } else {
+                setTimeout(() => showScreen(nextScreen), 300);
+            }
+        }
+
+        function calculateResults() {
+            // Show brief analyzing overlay
+            const analyzing = document.createElement('div');
+            analyzing.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                font-size: 1.2rem;
+                font-weight: 600;
+            `;
+            analyzing.textContent = 'Analyzing your results...';
+            document.body.appendChild(analyzing);
+
+            setTimeout(() => {
+                document.body.removeChild(analyzing);
+                if (score >= 12) {
+                    showScreen('end-a'); // Prepared
+                } else {
+                    showScreen('end-b'); // Needs Prep
+                }
+            }, 800);
+        }
+
+        function skipToOffer() {
+            // Send them to low-score end card since they're skipping the assessment
+            score = 0;
+            showScreen('end-b');
+        }
+
+        function openStore() {
+            // AppLovin/MRAID compliant store open
+            if (typeof mraid !== 'undefined' && mraid.open) {
+                mraid.open('https://preparedhero.com/emergency-fire-blanket?utm_source=applovin&utm_campaign=efb_quiz');
+            } else if (window.parent && window.parent !== window) {
+                // Fallback for iframe context
+                window.parent.postMessage({
+                    type: 'open_store',
+                    url: 'https://preparedhero.com/emergency-fire-blanket?utm_source=applovin&utm_campaign=efb_quiz'
+                }, '*');
+            } else {
+                // Fallback for testing
+                window.open('https://preparedhero.com/emergency-fire-blanket?utm_source=applovin&utm_campaign=efb_quiz', '_blank');
+            }
+        }
+
+        function showDemo() {
+            // Secondary CTA for prepared users
+            if (typeof mraid !== 'undefined' && mraid.open) {
+                mraid.open('https://preparedhero.com/how-efb-works?utm_source=applovin');
+            } else {
+                window.open('https://preparedhero.com/how-efb-works?utm_source=applovin', '_blank');
+            }
+        }
+
+        function showWhy() {
+            // Secondary CTA for needs-prep users
+            if (typeof mraid !== 'undefined' && mraid.open) {
+                mraid.open('https://preparedhero.com/blanket-vs-extinguisher?utm_source=applovin');
+            } else {
+                window.open('https://preparedhero.com/blanket-vs-extinguisher?utm_source=applovin', '_blank');
+            }
+        }
+
+        // Auto-start loading sequence
+        setTimeout(() => {
+            if (currentScreen === 'loading') {
+                showScreen('start');
+            }
+        }, 2500);
+
+        // MRAID initialization for AppLovin
+        if (typeof mraid !== 'undefined') {
+            if (mraid.getState() === 'loading') {
+                mraid.addEventListener('ready', function() {
+                    console.log('MRAID Ready');
+                });
+            }
+        }
+
+        // Prevent scrolling and handle touch events
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Add haptic feedback for iOS (if available)
+        function addHaptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        // Add haptic to all button clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.classList.contains('answer-btn')) {
+                addHaptic();
+            }
+        });
+
+        // Track engagement for AppLovin
+        function trackEvent(eventName, data = {}) {
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'track_event',
+                    event: eventName,
+                    data: data
+                }, '*');
+            }
+        }
+
+        // Track quiz start
+        function trackQuizStart() {
+            trackEvent('quiz_started');
+        }
+
+        // Track quiz completion
+        function trackQuizComplete(finalScore) {
+            trackEvent('quiz_completed', { 
+                score: finalScore,
+                category: finalScore >= 10 ? 'prepared' : 'needs_prep'
+            });
+        }
+
+        // Update answer function to include tracking
+        const originalAnswer = answer;
+        answer = function(points, nextScreen) {
+            if (nextScreen === 'results') {
+                trackQuizComplete(score + points);
+            }
+            return originalAnswer(points, nextScreen);
+        };
+    </script>
+</body>
+</html>
